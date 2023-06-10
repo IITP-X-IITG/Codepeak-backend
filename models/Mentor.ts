@@ -33,10 +33,6 @@ const mentorSchema = new Schema({
 		required: true,
 		unique: true,
 	},
-	projectLinks: {
-		type: Array,
-		required: true,
-	},
 	willReview: {
 		type: Boolean,
 		required: true,
