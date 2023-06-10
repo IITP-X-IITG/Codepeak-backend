@@ -1,0 +1,25 @@
+name: lint and format
+
+on: push
+
+jobs:
+  super-lint:
+    name: Lint code base
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup node js  
+        uses: actions/setup-node@v1
+
+      - run: npm ci
+
+      - run: npm run format
+
+      - name: Run super-linter
+        uses: github/super-linter@v3
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        

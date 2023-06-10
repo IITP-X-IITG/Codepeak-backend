@@ -7,7 +7,6 @@ const app: Application = express()
 const port = process.env.PORT || 3000
 const dbURI = process.env.URL || null
 
-// Connect to MongoDB
 if (dbURI) {
 	mongoose
 		.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
@@ -16,7 +15,7 @@ if (dbURI) {
 			app.use(bodyParser.json()) // for parsing application/json
 			app.use(bodyParser.urlencoded({ extended: true }))
 
-      // express routes
+			// express routes
 			app.use('/api/register/', require('./routes/register'))
 
 			app.listen(port, () => {
