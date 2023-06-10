@@ -1,25 +1,29 @@
 require('dotenv').config()
-import express, { Application } from 'express';
-import mongoose, { ConnectionOptions } from 'mongoose';
+import bodyParser from 'body-parser'
+import express, { Application } from 'express'
+import mongoose, { ConnectOptions } from 'mongoose'
 
-const app: Application = express();
-const port = process.env.PORT || 3000;
-const dbURI = process.env.URL;
+const app: Application = express()
+const port = process.env.PORT || 3000
+const dbURI = process.env.URL || null
 
 // Connect to MongoDB
-mongoose.connect(dbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-} as ConnectionOptions)
-  .then(() => {
-    console.log('Connected to MongoDB');
+if (dbURI) {
+	mongoose
+		.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
+		.then(() => {
+			console.log('Connected to MongoDB')
+			app.use(bodyParser.json()) // for parsing application/json
+			app.use(bodyParser.urlencoded({ extended: true }))
 
-    // Set up your Express routes here
+      // express routes
+			app.use('/api/register/', require('./routes/register'))
 
-    app.listen(port, () => {
-      console.log(`Server is listening on port ${port}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Error connecting to MongoDB:', err);
-  });
+			app.listen(port, () => {
+				console.log(`Server is listening on port ${port}`)
+			})
+		})
+		.catch((err) => {
+			console.error('Error connecting to MongoDB:', err)
+		})
+}

@@ -1,47 +1,48 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-const projectSchema = new Schema({
-	title: {
+const studentSchema = new Schema({
+	firstname: {
 		type: String,
 		required: true,
 	},
-	description: {
+	lastname: {
 		type: String,
 		required: true,
 	},
-	tags: {
-		type: Array,
-		required: true,
-	},
-	mentor: {
-		type: String,
-		required: true,
-	},
-	mentorGithub: {
-		type: String,
-		required: true,
-	},
-	languages: {
-		type: Array,
-		required: true,
-	},
-	githubLink: {
+	email: {
 		type: String,
 		required: true,
 		unique: true,
 	},
-	image: {
+	instituteEmail: {
 		type: String,
+		required: true,
+		unique: true,
 	},
-	sponsored: {
-		type: Boolean,
+	phoneno: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	organization: {
+		type: String,
 		required: true,
 	},
-	year: {
-		type: Number,
+	githubProfile: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	otherProfile: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	firstTime: {
+		type: Boolean,
 		required: true,
 	},
 })
 
-module.exports = mongoose.model('Project', projectSchema)
+module.exports = mongoose.model('Student', studentSchema)

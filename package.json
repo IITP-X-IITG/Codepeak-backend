@@ -1,18 +1,22 @@
 {
 	"name": "ts-backend-template",
 	"version": "1.0.0",
-	"main": "dist/index.js",
+	"main": "dist/src/index.js",
 	"scripts": {
 		"build": "yarn rimraf dist && yarn tsc",
 		"prestart": "yarn build",
-		"start": "node dist/index.js",
+		"start": "node dist/src/index.js",
 		"preserve": "yarn rimraf dist",
-		"serve": "yarn concurrently 'tsc -w' 'nodemon dist/index.js' ",
+		"serve": "yarn concurrently 'tsc -w' 'nodemon dist/src/index.js' ",
 		"format": "prettier --write ."
 	},
 	"license": "MIT",
 	"dependencies": {
+		"@types/body-parser": "^1.19.2",
+		"@types/express-validator": "^3.0.0",
+		"body-parser": "^1.20.2",
 		"express": "^4.18.2",
+		"express-validator": "^7.0.1",
 		"mongodb": "^5.6.0",
 		"mongoose": "^7.2.3",
 		"rimraf": "^4.1.2"
