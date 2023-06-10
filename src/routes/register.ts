@@ -1,8 +1,9 @@
+/* eslint-disable */
 const express = require('express')
 const Student = require('../../models/Student')
-const Mentor = require('../../models/Mentor')
+// import Mentor = require('../../models/Mentor')
 const router = express.Router()
-const { body, validationResult } = require('express-validator')
+import { body, validationResult } from 'express-validator'
 
 router.post(
 	'/student',

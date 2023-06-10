@@ -1,7 +1,9 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import express, { Application } from 'express'
 import mongoose, { ConnectOptions } from 'mongoose'
+
+dotenv.config()
 
 const app: Application = express()
 const port = process.env.PORT || 3000
@@ -16,6 +18,7 @@ if (dbURI) {
 			app.use(bodyParser.urlencoded({ extended: true }))
 
 			// express routes
+			/* eslint-disable */
 			app.use('/api/register/', require('./routes/register'))
 
 			app.listen(port, () => {

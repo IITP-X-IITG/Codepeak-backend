@@ -8,7 +8,8 @@
 		"start": "node dist/src/index.js",
 		"preserve": "yarn rimraf dist",
 		"serve": "yarn concurrently 'tsc -w' 'nodemon dist/src/index.js' ",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"lint": "prettier --write . && eslint ."
 	},
 	"license": "MIT",
 	"dependencies": {
@@ -27,6 +28,7 @@
 		"@types/mongoose": "^5.11.97",
 		"@types/node": "^18.14.2",
 		"@typescript-eslint/eslint-plugin": "^5.59.9",
+		"@typescript-eslint/parser": "^5.59.9",
 		"concurrently": "^7.6.0",
 		"dotenv": "^16.0.3",
 		"eslint": "^8.42.0",

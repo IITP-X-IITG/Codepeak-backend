@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose
+import { Schema, model } from 'mongoose'
 
 const mentorSchema = new Schema({
 	firstname: {
@@ -48,4 +47,4 @@ const mentorSchema = new Schema({
 	},
 })
 
-module.exports = mongoose.model('Mentor', mentorSchema)
+module.exports = model('Mentor', mentorSchema)

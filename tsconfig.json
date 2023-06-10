@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es2016" ,
+		"target": "es2016",
 		"module": "commonjs",
 		"outDir": "./dist",
 		"rootDir": ".",
@@ -9,8 +9,5 @@
 		"strict": true,
 		"skipLibCheck": true
 	},
-	"include": [
-		"models/**/*.ts",
-		"src/**/*.ts"
-	]
+	"include": ["models/**/*.ts", "src/**/*.ts", "**/*.ts", ".eslintrc.js"]
 }
