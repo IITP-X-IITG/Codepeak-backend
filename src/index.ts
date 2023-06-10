@@ -1,15 +1,25 @@
-import express from 'express'
 require('dotenv').config()
+import express, { Application } from 'express';
+import mongoose, { ConnectionOptions } from 'mongoose';
 
-const PORT = process.env.PORT || 3000
-const HOST = process.env.HOST || 'http://localhost'
-const app = express()
+const app: Application = express();
+const port = process.env.PORT || 3000;
+const dbURI = process.env.URL;
 
-app.get('/', (_req, res) => {
-	res.send('Hello world in TS express code!')
-})
+// Connect to MongoDB
+mongoose.connect(dbURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+} as ConnectionOptions)
+  .then(() => {
+    console.log('Connected to MongoDB');
 
-// start the server
-app.listen(PORT, () => {
-	console.log(`App started on ${HOST}:${PORT}/`)
-})
+    // Set up your Express routes here
+
+    app.listen(port, () => {
+      console.log(`Server is listening on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+  });
