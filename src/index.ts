@@ -20,6 +20,7 @@ if (dbURI) {
 			// express routes
 			/* eslint-disable */
 			app.use('/api/register/', require('./routes/register'))
+			app.use('/api/add-project/', require('./routes/addProject'))
 
 			app.listen(port, () => {
 				console.log(`Server is listening on port ${port}`)
