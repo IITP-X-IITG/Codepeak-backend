@@ -7,7 +7,7 @@
 		"prestart": "yarn build",
 		"start": "node dist/src/index.js",
 		"preserve": "yarn rimraf dist",
-		"serve": "yarn concurrently 'tsc -w' 'nodemon dist/src/index.js' ",
+		"serve": "tsc; nodemon dist/src/index.js",
 		"format": "prettier --write .",
 		"lint": "prettier --write . && eslint ."
 	},

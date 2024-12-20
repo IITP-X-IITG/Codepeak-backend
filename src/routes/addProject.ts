@@ -29,10 +29,10 @@ router.post(
 				mentor: string
 				mentorGithub: string
 				languages: string[]
-                githubLink: string
-                image: string | undefined
-                sponsored: boolean
-                year: number
+				githubLink: string
+				image: string | undefined
+				sponsored: boolean
+				year: number
 			}
 		},
 		res: {
@@ -48,19 +48,20 @@ router.post(
 			return res.status(400).json({ error: errors.array() })
 		}
 		try {
-            // check if project already exists
-            let project = await Project.findOne({ githubLink: req.body.githubLink })
-            if (project) {
-                return res.status(400).json({ error: { msg: 'Project already exists' } })
-            }
+			// check if project already exists
+			let project = await Project.findOne({ githubLink: req.body.githubLink })
+			if (project) {
+				return res.status(400).json({ error: { msg: 'Project already exists' } })
+			}
 
 			const newProject = new Project(req.body)
 			await newProject.save()
 			res.status(200).json({ message: 'Project added successfully' })
 		} catch (err: any) {
 			console.error(err.message)
-			res.status(500).json({error: 'Server Error'})
+			res.status(500).json({ error: 'Server Error' })
 		}
 	}
 )
 
+module.exports = router
