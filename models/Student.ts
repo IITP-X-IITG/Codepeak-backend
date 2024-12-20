@@ -17,7 +17,6 @@ const studentSchema = new Schema({
 	institute: {
 		type: String,
 		required: true,
-		unique: true,
 	},
 	phoneno: {
 		type: String,
