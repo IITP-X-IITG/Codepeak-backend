@@ -13,7 +13,6 @@ import { body, validationResult } from 'express-validator'
 router.post(
 	'/student',
 	body('firstname').isLength({ min: 1 }).withMessage('Name is required'),
-	body('lastname').isLength({ min: 0 }).withMessage('lastname is required'),
 	body('firstname').trim().isAlpha().withMessage('First name must contain only letters'),
 	body('lastname').trim().isAlpha().withMessage('Last name must contain only letters'),
 	body('email').isLength({ min: 1 }).withMessage('Email is required'),
@@ -23,10 +22,7 @@ router.post(
 	body('phoneno')
 		.matches(/^[0-9]{10}$/)
 		.withMessage('Phone number must be 10 digits'),
-	body('profilepage').isLength({ min: 0 }).withMessage('profile page is required'),
-	body('gitlabprofile').isLength({ min: 0 }).withMessage('Gitlab profile is required'),
 	body('githubProfile').isLength({ min: 1 }).withMessage('Github Profile is required'),
-	body('otherProfile').isLength({ min: 0 }).withMessage('Other Profile is required like linkedin'),
 	body('firstTime').isLength({ min: 1 }).withMessage('First Time is required'),
 	async (
 		req: {
@@ -97,7 +93,6 @@ router.post(
 router.post(
 	'/mentor',
 	body('firstname').isLength({ min: 1 }).withMessage('Name is required'),
-	body('lastname').isLength({ min: 0 }).withMessage('lastname is required'),
 	body('firstname').trim().isAlpha().withMessage('First name must contain only letters'),
 	body('lastname').trim().isAlpha().withMessage('Last name must contain only letters'),
 	body('email').isLength({ min: 1 }).withMessage('Email is required'),
@@ -108,7 +103,6 @@ router.post(
 		.withMessage('Phone number must be 10 digits'),
 	body('organization').isLength({ min: 1 }).withMessage('Organization is required'),
 	body('githubProfile').isLength({ min: 1 }).withMessage('Github Profile is required'),
-	body('gitlabProfile').isLength({ min: 0 }).withMessage('Gitlab Profile is required'),
 	body('otherProfile').isLength({ min: 1 }).withMessage('Other Profile is required'),
 	body('projectList').isLength({ min: 1 }).withMessage('Project List is required'),
 	body('firstTime').isLength({ min: 1 }).withMessage('First Time is required'),
