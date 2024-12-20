@@ -28,13 +28,22 @@ const mentorSchema = new Schema({
 		required: true,
 		unique: true,
 	},
-	otherProfile: {
+	gitlabProfile: {
 		type: String,
-		required: true,
+		required: false,
 		unique: true,
 	},
+	otherProfile: {
+		type: String,
+		required: false,
+		unique: true,
+	},
+	projectList: {
+		type: Array<String>,
+		required: true,
+	},
 	willReview: {
-		type: Boolean,
+		type: String,
 		required: true,
 	},
 	firstTime: {

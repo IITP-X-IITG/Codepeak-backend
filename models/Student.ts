@@ -7,14 +7,14 @@ const studentSchema = new Schema({
 	},
 	lastname: {
 		type: String,
-		required: true,
+		required: false,
 	},
 	email: {
 		type: String,
 		required: true,
 		unique: true,
 	},
-	instituteEmail: {
+	institute: {
 		type: String,
 		required: true,
 		unique: true,
@@ -24,18 +24,24 @@ const studentSchema = new Schema({
 		required: true,
 		unique: true,
 	},
-	organization: {
+	profilePage: {
 		type: String,
-		required: true,
+		required: false,
+		unique: true,
 	},
 	githubProfile: {
 		type: String,
 		required: true,
 		unique: true,
 	},
+	gitlabProfile: {
+		type: String,
+		required: false,
+		unique: true,
+	},
 	otherProfile: {
 		type: String,
-		required: true,
+		required: false,
 		unique: true,
 	},
 	firstTime: {

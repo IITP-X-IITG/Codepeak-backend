@@ -13,18 +13,20 @@ import { body, validationResult } from 'express-validator'
 router.post(
 	'/student',
 	body('firstname').isLength({ min: 1 }).withMessage('Name is required'),
-	body('lastname').isLength({ min: 1 }).withMessage('lastname is required'),
-	body('firstName').trim().isAlpha().withMessage('First name must contain only letters'),
-  	body('lastName').trim().isAlpha().withMessage('Last name must contain only letters'),
+	body('lastname').isLength({ min: 0 }).withMessage('lastname is required'),
+	body('firstname').trim().isAlpha().withMessage('First name must contain only letters'),
+	body('lastname').trim().isAlpha().withMessage('Last name must contain only letters'),
 	body('email').isLength({ min: 1 }).withMessage('Email is required'),
-	body('instituteEmail').isLength({ min: 1 }).withMessage('Institute Email is required'),
+	body('institute').isLength({ min: 1 }).withMessage('Institute is required'),
 	body('email').isEmail().normalizeEmail().withMessage('Invalid email format'),
-  	body('instituteEmail').isEmail().normalizeEmail().withMessage('Invalid institute email format'),
 	body('phoneno').isLength({ min: 1 }).withMessage('Phone Number is required'),
-	body('phoneNo').matches(/^[0-9]{10}$/).withMessage('Phone number must be 10 digits'),
-	body('organization').isLength({ min: 1 }).withMessage('Organization is required'),
+	body('phoneno')
+		.matches(/^[0-9]{10}$/)
+		.withMessage('Phone number must be 10 digits'),
+	body('profilepage').isLength({ min: 0 }).withMessage('profile page is required'),
+	body('gitlabprofile').isLength({ min: 0 }).withMessage('Gitlab profile is required'),
 	body('githubProfile').isLength({ min: 1 }).withMessage('Github Profile is required'),
-	body('otherProfile').isLength({ min: 1 }).withMessage('Other Profile is required'),
+	body('otherProfile').isLength({ min: 0 }).withMessage('Other Profile is required like linkedin'),
 	body('firstTime').isLength({ min: 1 }).withMessage('First Time is required'),
 	async (
 		req: {
@@ -32,9 +34,10 @@ router.post(
 				firstname: any
 				lastname: any
 				email: any
-				instituteEmail: any
-				phoneno: any
-				organization: any
+				institute: any
+				phoneno: number
+				profilePage: any
+				gitlabProfile: any
 				githubProfile: any
 				otherProfile: any
 				firstTime: any
@@ -58,9 +61,10 @@ router.post(
 				firstname,
 				lastname,
 				email,
-				instituteEmail,
+				institute,
 				phoneno,
-				organization,
+				profilePage,
+				gitlabProfile,
 				githubProfile,
 				otherProfile,
 				firstTime,
@@ -69,9 +73,10 @@ router.post(
 				firstname,
 				lastname,
 				email,
-				instituteEmail,
+				institute,
 				phoneno,
-				organization,
+				profilePage,
+				gitlabProfile,
 				githubProfile,
 				otherProfile,
 				firstTime,
@@ -92,16 +97,20 @@ router.post(
 router.post(
 	'/mentor',
 	body('firstname').isLength({ min: 1 }).withMessage('Name is required'),
-	body('lastname').isLength({ min: 1 }).withMessage('lastname is required'),
-	body('firstName').trim().isAlpha().withMessage('First name must contain only letters'),
-  	body('lastName').trim().isAlpha().withMessage('Last name must contain only letters'),
+	body('lastname').isLength({ min: 0 }).withMessage('lastname is required'),
+	body('firstname').trim().isAlpha().withMessage('First name must contain only letters'),
+	body('lastname').trim().isAlpha().withMessage('Last name must contain only letters'),
 	body('email').isLength({ min: 1 }).withMessage('Email is required'),
 	body('email').isEmail().normalizeEmail().withMessage('Invalid email format'),
 	body('phoneno').isLength({ min: 1 }).withMessage('Phone Number is required'),
-	body('phoneNo').matches(/^[0-9]{10}$/).withMessage('Phone number must be 10 digits'),
+	body('phoneno')
+		.matches(/^[0-9]{10}$/)
+		.withMessage('Phone number must be 10 digits'),
 	body('organization').isLength({ min: 1 }).withMessage('Organization is required'),
 	body('githubProfile').isLength({ min: 1 }).withMessage('Github Profile is required'),
+	body('gitlabProfile').isLength({ min: 0 }).withMessage('Gitlab Profile is required'),
 	body('otherProfile').isLength({ min: 1 }).withMessage('Other Profile is required'),
+	body('projectList').isLength({ min: 1 }).withMessage('Project List is required'),
 	body('firstTime').isLength({ min: 1 }).withMessage('First Time is required'),
 	body('willReview').isLength({ min: 1 }).withMessage('Will Review is required'),
 	async (
@@ -110,10 +119,12 @@ router.post(
 				firstname: any
 				lastname: any
 				email: any
-				phoneno: any
+				phoneno: number
 				organization: any
 				githubProfile: any
+				gitlabProfile: any
 				otherProfile: any
+				projectList: Array<any>
 				firstTime: any
 				willReview: any
 			}
@@ -139,7 +150,9 @@ router.post(
 				phoneno,
 				organization,
 				githubProfile,
+				gitlabProfile,
 				otherProfile,
+				projectList,
 				firstTime,
 				willReview,
 			} = req.body
@@ -150,7 +163,9 @@ router.post(
 				phoneno,
 				organization,
 				githubProfile,
+				gitlabProfile,
 				otherProfile,
+				projectList,
 				firstTime,
 				willReview,
 			})
