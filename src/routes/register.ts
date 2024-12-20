@@ -12,8 +12,8 @@ import { body, validationResult } from 'express-validator'
 // @return  JSON object
 router.post(
 	'/student',
-	body('firstname').isLength({ min: 1 }).withMessage('Name is required'),
-	body('lastname').isLength({ min: 1 }).withMessage('Email is required'),
+	body('firstname').isLength({ min: 1 }).withMessage('First Name is required'),
+	body('lastname').isLength({ min: 1 }).withMessage('Last Name is required'),
 	body('email').isLength({ min: 1 }).withMessage('Email is required'),
 	body('instituteEmail').isLength({ min: 1 }).withMessage('Institute Email is required'),
 	body('phoneno').isLength({ min: 1 }).withMessage('Phone Number is required'),
