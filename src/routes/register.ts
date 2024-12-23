@@ -1,9 +1,11 @@
 /* eslint-disable */
+import { Request, Response } from 'express';
 const express = require('express')
 const Student = require('../../models/Student')
 const Mentor = require('../../models/Mentor')
 const router = express.Router()
 import { body, validationResult } from 'express-validator'
+import { generateToken } from '../utils/jwt';
 
 // @route   POST /api/register/student
 // @desc    Register student
@@ -30,6 +32,7 @@ router.post(
 				firstname: any
 				lastname: any
 				email: any
+				password: any
 				institute: any
 				phoneno: number
 				profilePage: any
@@ -39,13 +42,7 @@ router.post(
 				firstTime: any
 			}
 		},
-		res: {
-			status: (arg0: number) => {
-				(): any
-				new (): any
-				json: { (arg0: { error?: any; message?: any }): void; new (): any }
-			}
-		}
+		res: Response
 	) => {
 		const errors = validationResult(req)
 		if (!errors.isEmpty()) {
@@ -57,6 +54,7 @@ router.post(
 				firstname,
 				lastname,
 				email,
+				password,
 				institute,
 				phoneno,
 				profilePage,
@@ -69,6 +67,7 @@ router.post(
 				firstname,
 				lastname,
 				email,
+				password,
 				institute,
 				phoneno,
 				profilePage,
@@ -77,7 +76,11 @@ router.post(
 				otherProfile,
 				firstTime,
 			})
+			const token = generateToken({ email: email });
+			console.log(token);
 			await user.save()
+			
+			res.cookie('token', token);
 			res.status(200).json({ message: 'User created successfully' })
 		} catch (err: any) {
 			res.status(500).json({ error: err.message })

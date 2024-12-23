@@ -1,13 +1,16 @@
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
-import express, { Application } from 'express'
+import express, { Application , Request, Response } from 'express'
 import mongoose, { ConnectOptions } from 'mongoose'
+import cookieParser from 'cookie-parser';
 
 dotenv.config()
 
 const app: Application = express()
 const port = process.env.PORT || 3000
 const dbURI = process.env.URL || null
+
+app.use(cookieParser());
 
 if (dbURI) {
 	mongoose
@@ -30,3 +33,5 @@ if (dbURI) {
 			console.error('Error connecting to MongoDB:', err)
 		})
 }
+
+app.use(express.static('public'));
