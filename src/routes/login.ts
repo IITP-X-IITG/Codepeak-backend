@@ -4,7 +4,7 @@ const Mentor = require('../../models/Mentor')
 const { generateToken } = require('../utils/jwt');
 const router = express.Router();
 
-router.post('/login/students', (req: Request, res: Response) => {
+router.post('/students', (req: Request, res: Response) => {
     const { email, password } = req.body;
     Student.findOne({ email: email })
         .then((user: typeof Student) => {
@@ -22,7 +22,7 @@ router.post('/login/students', (req: Request, res: Response) => {
         });
 });
 
-router.post('/login/mentors', (req, res) => {
+router.post('/mentors', (req, res) => {
     const { email, password } = req.body;
     Mentor.findOne({ email: email })
         .then((user: typeof Student) => {
@@ -39,3 +39,5 @@ router.post('/login/mentors', (req, res) => {
             res.status(500).json({ error: err.message });
         });
 });
+
+module.exports = router
