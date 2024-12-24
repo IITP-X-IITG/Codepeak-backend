@@ -9,7 +9,11 @@ export const authorization = (req: Request, res: Response, next: NextFunction) =
     }
     
     const decoded = verifyToken(token);
-    // req.user = decoded;
+    if(!decoded) {
+      return res.status(401).json({ message: 'Invalid token' });
+    } else {
+      console.log('Authenticated by auth service');
+    }
     next();
   } catch (error) {
     res.status(401).json({ message: 'Invalid token' });

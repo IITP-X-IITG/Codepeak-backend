@@ -14,7 +14,8 @@ const dbURI = process.env.URL || null
 app.use(cookieParser());
 
 app.get('/auth', authorization ,(req ,res)=>{
-	res.send('Authenticated')
+	console.log(req.headers.authorization);
+	res.status(200).send('Authenticated by index')
 });
 
 if (dbURI) {
