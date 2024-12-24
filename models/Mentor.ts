@@ -14,6 +14,10 @@ const mentorSchema = new Schema({
 		required: true,
 		unique: true,
 	},
+	password: {
+		type: String,
+		required: true,
+	},
 	phoneno: {
 		type: String,
 		required: true,
@@ -31,12 +35,12 @@ const mentorSchema = new Schema({
 	gitlabProfile: {
 		type: String,
 		required: false,
-		unique: true,
+		sparse: true,
 	},
 	otherProfile: {
 		type: String,
 		required: false,
-		unique: true,
+		sparse: true,
 	},
 	projectList: {
 		type: Array<String>,
