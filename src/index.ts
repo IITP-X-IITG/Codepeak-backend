@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
-import express, { Application , Request, Response } from 'express'
+import express, { Application, Request, Response } from 'express'
 import mongoose, { ConnectOptions } from 'mongoose'
-import cookieParser from 'cookie-parser';
-import { authorization } from './service/auth';
+import cookieParser from 'cookie-parser'
+import { authorization } from './service/auth'
 
 dotenv.config()
 
@@ -11,12 +11,12 @@ const app: Application = express()
 const port = process.env.PORT || 3000
 const dbURI = process.env.URL || null
 
-app.use(cookieParser());
+app.use(cookieParser())
 
-app.get('/auth', authorization ,(req ,res)=>{
-	console.log(req.headers.authorization);
+app.get('/auth', authorization, (req, res) => {
+	console.log(req.headers.authorization)
 	res.status(200).send('Authenticated by index')
-});
+})
 
 if (dbURI) {
 	mongoose
@@ -41,4 +41,4 @@ if (dbURI) {
 		})
 }
 
-app.use(express.static('public'));
+app.use(express.static('public'))
