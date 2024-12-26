@@ -19,7 +19,6 @@
     console.log(require('crypto').randomBytes(64).toString('hex'))
     ```
     the output that comes out is cryptoghapically secure and is preffred as the new JWT_SECRET key
-    
 -   Run locally
     ```bash
     npm run serve

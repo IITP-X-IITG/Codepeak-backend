@@ -1,11 +1,12 @@
 /* eslint-disable */
-import { Request, Response } from 'express';
+import { Request, Response } from 'express'
 const express = require('express')
 const Student = require('../../models/Student')
 const Mentor = require('../../models/Mentor')
+import * as argon2 from 'argon2'
 const router = express.Router()
 import { body, validationResult } from 'express-validator'
-import { generateToken } from '../utils/jwt';
+import { generateToken } from '../utils/jwt'
 
 // @route   POST /api/register/student
 // @desc    Register student
@@ -18,8 +19,9 @@ router.post(
 	body('firstname').trim().isAlpha().withMessage('First name must contain only letters'),
 	body('lastname').trim().isAlpha().withMessage('Last name must contain only letters'),
 	body('email').isLength({ min: 1 }).withMessage('Email is required'),
-	body('institute').isLength({ min: 1 }).withMessage('Institute is required'),
 	body('email').isEmail().normalizeEmail().withMessage('Invalid email format'),
+	body('password').isLength({ min: 1 }).withMessage('Password is required'),
+	body('institute').isLength({ min: 1 }).withMessage('Institute is required'),
 	body('phoneno').isLength({ min: 1 }).withMessage('Phone Number is required'),
 	body('phoneno')
 		.matches(/^[0-9]{10}$/)
@@ -63,11 +65,12 @@ router.post(
 				otherProfile,
 				firstTime,
 			} = req.body
+			const password_hash = await argon2.hash(password)
 			let user = new Student({
 				firstname,
 				lastname,
 				email,
-				password,
+				password: password_hash,
 				institute,
 				phoneno,
 				profilePage,
@@ -76,11 +79,11 @@ router.post(
 				otherProfile,
 				firstTime,
 			})
-			const token = generateToken({ email: email });
-			console.log(token);
+			const token = generateToken({ email: email })
+			console.log(token)
 			await user.save()
-			
-			res.cookie('token', token);
+
+			res.cookie('token', token)
 			res.status(200).json({ message: 'User created successfully' })
 		} catch (err: any) {
 			res.status(500).json({ error: err.message })
