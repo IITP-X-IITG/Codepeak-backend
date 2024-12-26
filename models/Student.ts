@@ -14,6 +14,10 @@ const studentSchema = new Schema({
 		required: true,
 		unique: true,
 	},
+	password: {
+		type: String,
+		required: true,
+	},
 	institute: {
 		type: String,
 		required: true,
@@ -26,7 +30,7 @@ const studentSchema = new Schema({
 	profilePage: {
 		type: String,
 		required: false,
-		unique: true,
+		sparse: true,
 	},
 	githubProfile: {
 		type: String,
@@ -36,12 +40,12 @@ const studentSchema = new Schema({
 	gitlabProfile: {
 		type: String,
 		required: false,
-		unique: true,
+		sparse: true,
 	},
 	otherProfile: {
 		type: String,
 		required: false,
-		unique: true,
+		sparse: true,
 	},
 	firstTime: {
 		type: Boolean,
