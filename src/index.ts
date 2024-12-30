@@ -8,7 +8,7 @@ import { authorization } from './service/auth'
 dotenv.config()
 
 const app: Application = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3001
 const dbURI = process.env.URL || null
 
 app.use(cookieParser())
