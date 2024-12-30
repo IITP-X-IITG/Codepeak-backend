@@ -43,8 +43,12 @@ const mentorSchema = new Schema({
 		sparse: true,
 	},
 	projectList: {
-		type: Array<String>,
+		type: String,
 		required: true,
+	},
+	projectDetails: {
+		type: String,
+		required: false,
 	},
 	willReview: {
 		type: String,

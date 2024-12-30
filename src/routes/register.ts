@@ -36,6 +36,7 @@ router.post(
 				email: any
 				password: any
 				institute: any
+				instituteEmail: any | undefined
 				phoneno: number
 				profilePage: any
 				gitlabProfile: any
@@ -47,6 +48,9 @@ router.post(
 		res: Response
 	) => {
 		const errors = validationResult(req)
+		if (true) {
+			return res.status(400).json({ error: "Student registration is disabled for now" })
+		}
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ error: errors.array() })
 		}
@@ -66,7 +70,7 @@ router.post(
 				firstTime,
 			} = req.body
 			const password_hash = await argon2.hash(password)
-			let user = new Student({
+			const student: typeof Student = {
 				firstname,
 				lastname,
 				email,
@@ -78,7 +82,11 @@ router.post(
 				githubProfile,
 				otherProfile,
 				firstTime,
-			})
+			}
+			if (req.body.instituteEmail !== undefined) {
+				student.instituteEmail = req.body.instituteEmail
+			}
+			let user = new Student(student)
 			const token = generateToken({ email: email })
 			console.log(token)
 			await user.save()
@@ -119,12 +127,14 @@ router.post(
 				firstname: any
 				lastname: any
 				email: any
+				password: any
 				phoneno: number
 				organization: any
 				githubProfile: any
 				gitlabProfile: any
 				otherProfile: any
-				projectList: Array<any>
+				projectList: any
+				projectDetails: any | undefined
 				firstTime: any
 				willReview: any
 			}
@@ -147,6 +157,7 @@ router.post(
 				firstname,
 				lastname,
 				email,
+				password,
 				phoneno,
 				organization,
 				githubProfile,
@@ -156,10 +167,12 @@ router.post(
 				firstTime,
 				willReview,
 			} = req.body
-			let user = new Mentor({
+			const password_hash = await argon2.hash(password)
+			const mentor: typeof Mentor = {
 				firstname,
 				lastname,
 				email,
+				password: password_hash,
 				phoneno,
 				organization,
 				githubProfile,
@@ -168,7 +181,12 @@ router.post(
 				projectList,
 				firstTime,
 				willReview,
-			})
+			}
+			if (req.body.projectDetails !== undefined) {
+				mentor.projectDetails = req.body.projectDetails
+			}
+
+			let user = new Mentor(mentor)
 			await user.save()
 			res.status(200).json({ message: 'User created successfully' })
 		} catch (err: any) {
