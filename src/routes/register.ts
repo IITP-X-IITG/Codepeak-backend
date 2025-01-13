@@ -90,7 +90,7 @@ router.post(
 			console.log(token)
 			await user.save()
 
-			res.cookie('token', token)
+			res.cookie('token', token, { httpOnly: true })
 			res.status(200).json({ message: 'User created successfully' })
 		} catch (err: any) {
 			res.status(500).json({ error: err.message })
