@@ -48,9 +48,9 @@ router.post(
 		res: Response
 	) => {
 		const errors = validationResult(req)
-		if (true) {
-			return res.status(400).json({ error: "Student registration is disabled for now" })
-		}
+		// if (true) {
+		// 	return res.status(400).json({ error: "Student registration is disabled for now" })
+		// }
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ error: errors.array() })
 		}
