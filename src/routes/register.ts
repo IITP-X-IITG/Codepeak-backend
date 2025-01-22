@@ -36,7 +36,7 @@ router.post(
 				email: any
 				password: any
 				institute: any
-				instituteEmail: any | undefined
+				instituteEmail: any
 				phoneno: number
 				profilePage: any
 				gitlabProfile: any
@@ -62,6 +62,7 @@ router.post(
 				email,
 				password,
 				institute,
+				instituteEmail,
 				phoneno,
 				profilePage,
 				gitlabProfile,
@@ -76,15 +77,13 @@ router.post(
 				email,
 				password: password_hash,
 				institute,
+				instituteEmail,
 				phoneno,
 				profilePage,
 				gitlabProfile,
 				githubProfile,
 				otherProfile,
 				firstTime,
-			}
-			if (req.body.instituteEmail !== undefined) {
-				student.instituteEmail = req.body.instituteEmail
 			}
 			let user = new Student(student)
 			const token = generateToken({ email: email })
