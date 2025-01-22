@@ -22,6 +22,11 @@ const studentSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	instituteEmail: {
+		type: String,
+		required: true,
+		unique: true,
+	},
 	phoneno: {
 		type: String,
 		required: true,
