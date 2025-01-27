@@ -20,7 +20,7 @@ app.get('/auth', authorization, (req, res) => {
 
 if (dbURI) {
 	mongoose
-		.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
+		.connect(dbURI)
 		.then(() => {
 			console.log('Connected to MongoDB')
 			app.use(bodyParser.json()) // for parsing application/json

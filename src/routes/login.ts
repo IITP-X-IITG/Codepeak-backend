@@ -18,7 +18,7 @@ router.post('/students', (req: Request, res: Response) => {
 					return res.status(401).json({ message: 'Invalid password' })
 				}
 				const token = generateToken({ email: user.email })
-				res.cookie('token', token)
+				res.cookie('token', token, { httpOnly: true })
 				res.status(200).json({ message: 'Login successful' })
 			})
 		})
@@ -38,7 +38,7 @@ router.post('/mentors', (req, res) => {
 				return res.status(401).json({ message: 'Invalid password' })
 			}
 			const token = generateToken({ email: user.email })
-			res.cookie('token', token)
+			res.cookie('token', token, { httpOnly: true })
 			res.status(200).json({ message: 'Login successful' })
 		})
 		.catch((err: any) => {
