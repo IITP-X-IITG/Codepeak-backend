@@ -14,6 +14,23 @@ router.post('/add', async (req: Request, res: Response) => {
     }
 });
 
+router.post('/update', async (req: Request, res: Response) => {
+    try {
+        const { student, mentor, project, points } = req.body;
+        // Find the transaction to update
+        const transaction = await Transaction.findOne({ student, mentor, project });
+        if (!transaction) {
+            return res.status(404).json({ message: 'Transaction not found' });
+        }
+        // Update the transaction
+        transaction.points = points;
+        await transaction.save();
+        return res.status(201).json({ message: 'Transaction updated successfully', data: newTransaction });
+    } catch (error) {
+        return res.status(500).json({ message: 'Failed to add transaction', error });
+    }
+});
+
 router.get('/mentor-project', async (req: Request, res: Response) => {
     try {
         const { mentor, project } = req.query;
