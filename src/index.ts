@@ -30,7 +30,13 @@ if (dbURI) {
 			/* eslint-disable */
 			app.use('/api/register/', require('./routes/register'))
 			app.use('/api/add-project/', require('./routes/addProject'))
-			app.use('/login/', require('./routes/login'))
+			app.use('/api/login/', require('./routes/login'))
+			// Register new password API route
+			const passwordRoute = require('./routes/password');
+			app.use('/api/password', passwordRoute.default || passwordRoute);
+			app.use('/api/projects/', require('./routes/project').default)
+			// Register addTransaction middleware
+			app.use('/api/transactions', require('./routes/addTransaction').default);
 
 			app.listen(port, () => {
 				console.log(`Server is listening on port ${port}`)
