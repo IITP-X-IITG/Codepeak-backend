@@ -34,7 +34,6 @@ if (dbURI) {
 			// Register new password API route
 			const passwordRoute = require('./routes/password');
 			app.use('/api/password', passwordRoute.default || passwordRoute);
-			app.use('/api/projects/', require('./routes/project').default)
 			// Register addTransaction middleware
 			app.use('/api/transactions', require('./routes/addTransaction').default);
 
