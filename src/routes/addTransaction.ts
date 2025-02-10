@@ -5,9 +5,9 @@ const leaderboard = require('../../models/Leaderboard');
 
 router.post('/add', async (req: Request, res: Response) => {
     try {
-        const { student, mentor, project, points } = req.body;
+        const { student, mentor, project, points, type, open } = req.body;
         // Create and save a new transaction document
-        const newTransaction = new Transaction({ student, mentor, project, points });
+        const newTransaction = new Transaction({ student, mentor, project, points, type, open });
         await newTransaction.save();
         // Update the leaderboard
         if(leaderboard.findOne({ student })){
@@ -26,9 +26,9 @@ router.post('/add', async (req: Request, res: Response) => {
 
 router.post('/update', async (req: Request, res: Response) => {
     try {
-        const { student, mentor, project, points } = req.body;
+        const { student, mentor, project, points, type, open } = req.body;
         // Find the transaction to update
-        const transaction = await Transaction.findOne({ student, mentor, project });
+        const transaction = await Transaction.findOne({ student, mentor, project, type, open });
         if (!transaction) {
             return res.status(404).json({ message: 'Transaction not found' });
         }
@@ -46,15 +46,14 @@ router.post('/update', async (req: Request, res: Response) => {
 
 router.get('/mentor-project', async (req: Request, res: Response) => {
     try {
-        const { mentor, project } = req.query;
+        const { mentor } = req.query;
         
         if (!mentor) {
-            return res.status(400).json({ message: 'Mentor and project parameters are required' });
+            return res.status(400).json({ message: 'Mentor parameters are required' });
         }
 
         const transactions = await Transaction.find({
-            mentor: mentor,
-            project: project
+            mentor: mentor
         });
 
         return res.status(200).json({ 
