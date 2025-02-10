@@ -48,7 +48,7 @@ router.get('/mentor-project', async (req: Request, res: Response) => {
     try {
         const { mentor, project } = req.query;
         
-        if (!mentor || !project) {
+        if (!mentor) {
             return res.status(400).json({ message: 'Mentor and project parameters are required' });
         }
 
