@@ -25,7 +25,7 @@ router.post('/update', async (req: Request, res: Response) => {
         // Update the transaction
         transaction.points = points;
         await transaction.save();
-        return res.status(201).json({ message: 'Transaction updated successfully', data: newTransaction });
+        return res.status(201).json({ message: 'Transaction updated successfully', data: transaction });
     } catch (error) {
         return res.status(500).json({ message: 'Failed to add transaction', error });
     }
