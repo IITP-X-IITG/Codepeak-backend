@@ -18,7 +18,7 @@ router.post('/students', (req: Request, res: Response) => {
 					return res.status(401).json({ message: 'Invalid password' })
 				}
 				const token = generateToken({ email: user.email })
-				res.cookie('token', token, { httpOnly: true })
+				res.cookie('token', token)
 				res.status(200).json({ message: 'Login successful' })
 			})
 		})
@@ -34,17 +34,18 @@ router.post('/mentors', (req, res) => {
 			if (!user) {
 				return res.status(404).json({ message: 'Mentor not found' })
 			}
-			if (user.password !== password) {
-				return res.status(401).json({ message: 'Invalid password' })
-			}
-			const token = generateToken({ email: user.email })
-			res.cookie('token', token, { httpOnly: true })
-			res.status(200).json({ message: 'Login successful' })
-		})
-		.catch((err: any) => {
-			res.status(500).json({ error: err.message })
+			argon2.verify(user.password, password).then((equal) => {
+				if (!equal) {
+					return res.status(401).json({ message: 'Invalid password' })
+				}
+				const token = generateToken({ email: user.email })
+				res.cookie('token', token)
+				res.status(200).json({ message: 'Login successful' })
+			})
+			.catch((err: any) => {
+				res.status(500).json({ error: err.message })
+			})
 		})
 })
-
 module.exports = router
 /* vi: set et sw=4: */
