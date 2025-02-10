@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 const router = Router();
-const Transaction = require('../../models/Transactions'); // using the Transactions model
+const Transaction = require('../../models/Transactions'); 
+const leaderboard = require('../../models/Leaderboard');
 
 router.post('/add', async (req: Request, res: Response) => {
     try {
@@ -8,6 +9,15 @@ router.post('/add', async (req: Request, res: Response) => {
         // Create and save a new transaction document
         const newTransaction = new Transaction({ student, mentor, project, points });
         await newTransaction.save();
+        // Update the leaderboard
+        if(leaderboard.findOne({ student })){
+            const studentData = await leaderboard.findOne({ student });
+            studentData.points += points;
+        } else {
+            const newStudentData = new leaderboard({ student, points });
+            await newStudentData.save();
+        }
+
         return res.status(201).json({ message: 'Transaction added successfully', data: newTransaction });
     } catch (error) {
         return res.status(500).json({ message: 'Failed to add transaction', error });
@@ -23,8 +33,11 @@ router.post('/update', async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'Transaction not found' });
         }
         // Update the transaction
+        const studentData = await leaderboard.findOne({ student });
+        studentData.points = studentData.points - transaction.points + points;
         transaction.points = points;
         await transaction.save();
+        await studentData.save();
         return res.status(201).json({ message: 'Transaction updated successfully', data: transaction });
     } catch (error) {
         return res.status(500).json({ message: 'Failed to add transaction', error });

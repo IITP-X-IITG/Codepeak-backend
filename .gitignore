@@ -91,7 +91,7 @@ out
 .nuxt
 dist
 /public 
-./src/repos.txt
+src/repo.txt
 
 # Gatsby files
 .cache/

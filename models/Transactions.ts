@@ -13,6 +13,14 @@ const transactionSchema = new Schema({
         type: String,
         required: true,
     },
+    type:{
+        type: String,
+        required: true
+    },
+    open:{
+        type: Boolean,
+        required: true
+    },
     points : {
         type: Number,
         required: true
