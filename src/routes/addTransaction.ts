@@ -1,46 +1,49 @@
 import { Router, Request, Response } from 'express';
+import { addTransaction, updateTransaction } from '../service/transaction';
+const Leaderboard = require('../../models/Leaderboard');
 const router = Router();
-const Transaction = require('../../models/Transactions'); 
-const leaderboard = require('../../models/Leaderboard');
 
 router.post('/add', async (req: Request, res: Response) => {
     try {
         const { student, mentor, project, points, type, open } = req.body;
-        // Create and save a new transaction document
-        const newTransaction = new Transaction({ student, mentor, project, points, type, open });
-        await newTransaction.save();
-        // Update the leaderboard
-        if(leaderboard.findOne({ student })){
-            const studentData = await leaderboard.findOne({ student });
-            studentData.points += points;
-        } else {
-            const newStudentData = new leaderboard({ student, points });
-            await newStudentData.save();
+        const result = await addTransaction(student, mentor, project, points, type, open);
+        
+        if (!result.success) {
+            return res.status(400).json({ 
+                message: result.message,
+                error: result.error 
+            });
         }
-
-        return res.status(201).json({ message: 'Transaction added successfully', data: newTransaction });
+        
+        return res.status(201).json({ message: result.message });
     } catch (error) {
-        return res.status(500).json({ message: 'Failed to add transaction', error });
+        console.error("Error in add transaction route:", error);
+        return res.status(500).json({ 
+            message: 'Internal server error',
+            error: error.message 
+        });
     }
 });
 
 router.post('/update', async (req: Request, res: Response) => {
     try {
-        const { student, mentor, project, points, type, open } = req.body;
-        // Find the transaction to update
-        const transaction = await Transaction.findOne({ student, mentor, project, type, open });
-        if (!transaction) {
-            return res.status(404).json({ message: 'Transaction not found' });
+        const { student, project, points, open } = req.body;
+        const result = await updateTransaction(student, project, points, open);
+        
+        if (!result.success) {
+            return res.status(400).json({ 
+                message: result.message,
+                error: result.error 
+            });
         }
-        // Update the transaction
-        const studentData = await leaderboard.findOne({ student });
-        studentData.points = studentData.points - transaction.points + points;
-        transaction.points = points;
-        await transaction.save();
-        await studentData.save();
-        return res.status(201).json({ message: 'Transaction updated successfully', data: transaction });
+        
+        return res.status(200).json({ message: result.message });
     } catch (error) {
-        return res.status(500).json({ message: 'Failed to add transaction', error });
+        console.error("Error in update transaction route:", error);
+        return res.status(500).json({ 
+            message: 'Internal server error',
+            error: error.message 
+        });
     }
 });
 
@@ -88,6 +91,25 @@ router.get('/student-project', async (req: Request, res: Response) => {
         return res.status(500).json({ 
             message: 'Failed to fetch transactions', 
             error 
+        });
+    }
+});
+
+router.get('/leaderboard', async (req: Request, res: Response) => {
+    try {
+        const leaderboard = await Leaderboard.find({})
+            .sort({ points: -1 }) // Sort by points in descending order
+            .limit(100); // Get top 10 students
+
+        return res.status(200).json({
+            message: 'Leaderboard fetched successfully',
+            data: leaderboard
+        });
+    } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+        return res.status(500).json({
+            message: 'Failed to fetch leaderboard',
+            error
         });
     }
 });

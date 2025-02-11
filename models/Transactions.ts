@@ -12,6 +12,10 @@ const transactionSchema = new Schema({
     project : {
         type: String,
         required: true,
+        unique: true
+    },
+    title :{
+        type: String,
     },
     type:{
         type: String,
@@ -25,6 +29,5 @@ const transactionSchema = new Schema({
         type: Number,
         required: true
     },
-
 });
 module.exports = model('transaction', transactionSchema)
