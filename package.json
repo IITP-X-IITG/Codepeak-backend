@@ -5,7 +5,8 @@
 	"scripts": {
 		"build": "yarn rimraf dist && yarn tsc",
 		"prestart": "yarn build",
-		"start": "node dist/src/index.js",
+		"start": "concurrently \"node dist/src/index.js\" \"tsx src/temp\"",
+		"dev" : "yarn build; yarn start",
 		"serve": "tsc; nodemon dist/src/index.js",
 		"format": "prettier --write .",
 		"lint": "prettier --write . && eslint ."
