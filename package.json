@@ -5,13 +5,15 @@
 	"scripts": {
 		"build": "yarn rimraf dist && yarn tsc",
 		"prestart": "yarn build",
-		"start": "node dist/src/index.js",
+		"start": "concurrently \"node dist/src/index.js\" \"tsx src/temp\"",
+		"dev" : "yarn build; yarn start",
 		"serve": "tsc; nodemon dist/src/index.js",
 		"format": "prettier --write .",
 		"lint": "prettier --write . && eslint ."
 	},
 	"license": "MIT",
 	"dependencies": {
+		"@octokit/rest": "^21.1.0",
 		"argon2": "^0.41.1",
 		"body-parser": "^1.20.3",
 		"cookie-parser": "^1.4.7",
@@ -20,6 +22,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"mongodb": "^6.12.0",
 		"mongoose": "^8.9.5",
+		"node-fetch": "^3.3.2",
 		"rimraf": "^6.0.1"
 	},
 	"devDependencies": {

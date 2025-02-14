@@ -1,47 +1,62 @@
 import { Router, Request, Response } from 'express';
+import { addTransaction, updateTransaction } from '../service/transaction';
+const Leaderboard = require('../../models/Leaderboard');
 const router = Router();
-const Transaction = require('../../models/Transactions'); // using the Transactions model
 
 router.post('/add', async (req: Request, res: Response) => {
     try {
-        const { student, mentor, project, points } = req.body;
-        // Create and save a new transaction document
-        const newTransaction = new Transaction({ student, mentor, project, points });
-        await newTransaction.save();
-        return res.status(201).json({ message: 'Transaction added successfully', data: newTransaction });
+        const { student, mentor, project, points, type, open } = req.body;
+        const result = await addTransaction(student, mentor, project, points, type, open);
+        
+        if (!result.success) {
+            return res.status(400).json({ 
+                message: result.message,
+                error: result.error 
+            });
+        }
+        
+        return res.status(201).json({ message: result.message });
     } catch (error) {
-        return res.status(500).json({ message: 'Failed to add transaction', error });
+        console.error("Error in add transaction route:", error);
+        return res.status(500).json({ 
+            message: 'Internal server error',
+            error: error.message 
+        });
     }
 });
 
 router.post('/update', async (req: Request, res: Response) => {
     try {
-        const { student, mentor, project, points } = req.body;
-        // Find the transaction to update
-        const transaction = await Transaction.findOne({ student, mentor, project });
-        if (!transaction) {
-            return res.status(404).json({ message: 'Transaction not found' });
+        const { student, project, points, open } = req.body;
+        const result = await updateTransaction(student, project, points, open);
+        
+        if (!result.success) {
+            return res.status(400).json({ 
+                message: result.message,
+                error: result.error 
+            });
         }
-        // Update the transaction
-        transaction.points = points;
-        await transaction.save();
-        return res.status(201).json({ message: 'Transaction updated successfully', data: newTransaction });
+        
+        return res.status(200).json({ message: result.message });
     } catch (error) {
-        return res.status(500).json({ message: 'Failed to add transaction', error });
+        console.error("Error in update transaction route:", error);
+        return res.status(500).json({ 
+            message: 'Internal server error',
+            error: error.message 
+        });
     }
 });
 
 router.get('/mentor-project', async (req: Request, res: Response) => {
     try {
-        const { mentor, project } = req.query;
+        const { mentor } = req.query;
         
-        if (!mentor || !project) {
-            return res.status(400).json({ message: 'Mentor and project parameters are required' });
+        if (!mentor) {
+            return res.status(400).json({ message: 'Mentor parameters are required' });
         }
 
         const transactions = await Transaction.find({
-            mentor: mentor,
-            project: project
+            mentor: mentor
         });
 
         return res.status(200).json({ 
@@ -76,6 +91,25 @@ router.get('/student-project', async (req: Request, res: Response) => {
         return res.status(500).json({ 
             message: 'Failed to fetch transactions', 
             error 
+        });
+    }
+});
+
+router.get('/leaderboard', async (req: Request, res: Response) => {
+    try {
+        const leaderboard = await Leaderboard.find({})
+            .sort({ points: -1 }) // Sort by points in descending order
+            .limit(100); // Get top 10 students
+
+        return res.status(200).json({
+            message: 'Leaderboard fetched successfully',
+            data: leaderboard
+        });
+    } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+        return res.status(500).json({
+            message: 'Failed to fetch leaderboard',
+            error
         });
     }
 });
