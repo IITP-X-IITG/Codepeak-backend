@@ -17,7 +17,7 @@ router.post('/students', (req: Request, res: Response) => {
 				if (!equal) {
 					return res.status(401).json({ message: 'Invalid password' })
 				}
-				const token = generateToken({ email: user.email })
+				const token = generateToken({ email: user.email, isMentor: false })
 				res.cookie('token', token)
 				res.status(200).json({ message: 'Login successful' })
 			})
@@ -38,7 +38,7 @@ router.post('/mentors', (req, res) => {
 				if (!equal) {
 					return res.status(401).json({ message: 'Invalid password' })
 				}
-				const token = generateToken({ email: user.email })
+				const token = generateToken({ email: user.email, isMentor: true })
 				res.cookie('token', token)
 				res.status(200).json({ message: 'Login successful' })
 			})

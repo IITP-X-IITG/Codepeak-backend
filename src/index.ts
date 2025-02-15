@@ -3,7 +3,9 @@ import bodyParser from 'body-parser'
 import express, { Application, Request, Response } from 'express'
 import mongoose, { ConnectOptions } from 'mongoose'
 import cookieParser from 'cookie-parser'
-import { authorization } from './service/auth'
+import { authorization, RequestWithToken } from './service/auth'
+const Student = require('../models/Student')
+const Mentor = require('../models/Mentor')
 
 dotenv.config()
 
@@ -31,11 +33,25 @@ if (dbURI) {
 			app.use('/api/register/', require('./routes/register'))
 			app.use('/api/add-project/', require('./routes/addProject'))
 			app.use('/api/login/', require('./routes/login'))
+			app.use('/api/logout/', require('./routes/logout'))
 			// Register new password API route
 			const passwordRoute = require('./routes/password');
-			app.use('/api/password', passwordRoute.default || passwordRoute);
+			app.use('/api/password', authorization, passwordRoute.default || passwordRoute);
 			// Register addTransaction middleware
 			app.use('/api/transactions', require('./routes/addTransaction').default);
+
+			app.post('/api/check-auth', authorization, async (req: RequestWithToken, res: Response) => {
+				const user = (req._isMentor === undefined || req._email === undefined)?null:await (
+					req._isMentor?
+					Mentor.findOne({ email: req._email }):
+					Student.findOne({ email: req._email })
+				);
+            	if (!user) {
+                	res.status(404).json({ error: 'User not found' });
+					return
+            	}
+				res.status(200).json({ user: {...user, password: undefined}, isMentor: req._isMentor }) // TODO:...
+			})
 
 			app.listen(port, () => {
 				console.log(`Server is listening on port ${port}`)

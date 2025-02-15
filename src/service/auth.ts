@@ -1,9 +1,14 @@
 import { Request, Response, NextFunction } from 'express'
-import { verifyToken } from '../utils/jwt'
+import { verifyToken, JWTPayload } from '../utils/jwt'
 
-export const authorization = (req: Request, res: Response, next: NextFunction) => {
+export interface RequestWithToken extends Request{
+	_email?: String;
+	_isMentor?: boolean;
+}
+
+export const authorization = (req: RequestWithToken, res: Response, next: NextFunction) => {
 	try {
-		const token = req.headers.authorization?.split(' ')[1]
+		const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 		if (!token) {
 			res.status(401).json({ message: 'Authentication required' })
 			return
@@ -16,6 +21,8 @@ export const authorization = (req: Request, res: Response, next: NextFunction) =
 		} else {
 			console.log('Authenticated by auth service')
 		}
+		req._email = decoded.email;
+		req._isMentor = decoded.isMentor;
 		next()
 	} catch (error) {
 		res.status(401).json({ message: 'Invalid token' })
