@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { addTransaction, updateTransaction } from '../service/transaction';
 const Leaderboard = require('../../models/Leaderboard');
+const Transaction = require('../../models/Transactions');
 const router = Router();
 
 router.post('/add', async (req: Request, res: Response) => {
