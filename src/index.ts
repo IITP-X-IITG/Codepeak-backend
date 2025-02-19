@@ -13,7 +13,7 @@ const dbURI = process.env.URL || null
 
 app.use(cookieParser())
 
-app.get('/auth', authorization, (req, res) => {
+app.get('/api/auth', authorization, (req, res) => {
 	console.log(req.headers.authorization)
 	res.status(200).send('Authenticated by index')
 })
