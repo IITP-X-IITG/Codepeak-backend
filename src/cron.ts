@@ -57,7 +57,7 @@ async function fetchIssuesAndPRs() {
       }
     }
 
-    console.log(`Filtered Issues:`, filteredIssues);
+    // console.log(`Filtered Issues:`, filteredIssues);
     console.log("---------------------------");
   } catch (error) {
     console.error("Error fetching data:", error);
