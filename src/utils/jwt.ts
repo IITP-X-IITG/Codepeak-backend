@@ -18,3 +18,11 @@ export const verifyToken = (token: string): boolean => {
 		return false
 	}
 }
+
+export const decodeToken = (token: string) => {
+	try {
+	  return jwt.decode(token); // This doesn't verify the signature
+	} catch (error) {
+	  return null;
+	}
+};

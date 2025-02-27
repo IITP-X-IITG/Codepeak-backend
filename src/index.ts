@@ -14,8 +14,11 @@ const dbURI = process.env.URL || null
 app.use(cookieParser())
 
 app.get('/api/auth', authorization, (req, res) => {
-	console.log(req.headers.authorization)
-	res.status(200).send('Authenticated by index')
+	res.status(200).json({ 
+		message: 'Authenticated',
+		mentorGit: req.githubUsername || "",
+		email: req.userEmail || ""
+	});
 })
 
 if (dbURI) {
