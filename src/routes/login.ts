@@ -19,7 +19,8 @@ router.post('/students', (req: Request, res: Response) => {
 				}
 				const token = generateToken({ email: user.email })
 				res.cookie('token', token)
-				res.status(200).json({ message: 'Login successful' })
+				res.status(200).json({ message: 'Login successful' ,
+									   mentorGit: user.githubProfile})
 			})
 		})
 		.catch((err: any) => {
@@ -30,7 +31,7 @@ router.post('/students', (req: Request, res: Response) => {
 router.post('/mentors', (req, res) => {
 	const { email, password } = req.body
 	Mentor.findOne({ email: email })
-		.then((user: typeof Student) => {
+		.then((user: typeof Mentor) => {
 			if (!user) {
 				return res.status(404).json({ message: 'Mentor not found' })
 			}
@@ -40,7 +41,8 @@ router.post('/mentors', (req, res) => {
 				}
 				const token = generateToken({ email: user.email })
 				res.cookie('token', token)
-				res.status(200).json({ message: 'Login successful' })
+				res.status(200).json({ message: 'Login successful' ,
+									   mentorGit: user.githubProfile})
 			})
 			.catch((err: any) => {
 				res.status(500).json({ error: err.message })
