@@ -9,10 +9,10 @@ interface TransactionResult {
     error?: any;
 }
 
-dotenv.config();
+dotenv.config({ path: __dirname + '/../../.env' });
 const dbURI = process.env.URL || null;
 const TIMEOUT_MS = 5000; // 5 seconds timeout
-
+console.log("dbURI", process.env.URL);
 export const addTransaction = async (
     student: any, 
     mentor: any, 
