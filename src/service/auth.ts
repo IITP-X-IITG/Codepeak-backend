@@ -9,6 +9,7 @@ declare global {
     interface Request {
       githubUsername?: string;
       userEmail?: string;
+	  type?: string;
     }
   }
 }
@@ -35,6 +36,7 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
 				// Store information in the request object for later use
 				req.githubUsername = result.message;
 				req.userEmail = userEmail;
+				req.type = result.type;
 				// Pass control to the next middleware/route handler
 				next();
 			} else {

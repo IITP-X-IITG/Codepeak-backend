@@ -16,7 +16,8 @@ app.use(cookieParser())
 app.get('/api/auth', authorization, (req, res) => {
 	res.status(200).json({ 
 		message: 'Authenticated',
-		mentorGit: req.githubUsername || "",
+		github: req.githubUsername || "",
+		type: req.type || "",
 		email: req.userEmail || ""
 	});
 })
