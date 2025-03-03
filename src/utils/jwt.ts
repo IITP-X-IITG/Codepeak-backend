@@ -3,19 +3,26 @@ import jwt from 'jsonwebtoken'
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 
 export interface JWTPayload {
-	email: string
+	email: string,
+	isMentor: boolean
 }
 
 export const generateToken = (payload: JWTPayload): string => {
 	return jwt.sign(payload, JWT_SECRET, { expiresIn: '14d' })
 }
 
-export const verifyToken = (token: string): boolean => {
+export const verifyAndDecodeToken = (token: string): JWTPayload | null => {
 	try {
-		jwt.verify(token, JWT_SECRET)
-		return true
+		const decoded = jwt.verify(token, JWT_SECRET);
+		if (!decoded || (typeof decoded === 'string')) {
+			return null;
+		}
+		return {
+			email: decoded.email,
+			isMentor: decoded.isMentor,
+		}
 	} catch (error) {
-		return false
+		return null;
 	}
 }
 

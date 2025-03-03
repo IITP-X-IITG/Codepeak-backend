@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 interface TransactionResult {
     success: boolean;
     message: string;
-    type: string;
+    type: 'student' | 'mentor' | 'none';
     error?: any;
 }
 

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { verifyToken, decodeToken } from '../utils/jwt'
+import { verifyAndDecodeToken } from '../utils/jwt'
 import { GitUsername } from '../service/getGitUsername'
 const Student = require('../../models/Student')
 
@@ -16,17 +16,19 @@ declare global {
 
 export const authorization = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const token = req.headers.authorization?.split(' ')[1]
+		const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 		if (!token) {
-			return res.status(401).json({ message: 'Authentication required' })
+			res.status(401).json({ message: 'Authentication required' })
+			return;
 		}
 
-		const decoded = verifyToken(token)
+		const decoded = verifyAndDecodeToken(token)
 		if (!decoded) {
-			return res.status(401).json({ message: 'Invalid token' })
+			res.status(401).json({ message: 'Invalid token' })
+			return;
 		}
 		
-		const userEmail = decodeToken(token).email;
+		const userEmail = decoded.email;
 		console.log('Authenticated by auth service', userEmail);
 			
 		try {
@@ -46,9 +48,11 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
 			}
 		} catch (error) {
 			console.error('Error processing GitHub username:', error);
-			return res.status(500).json({ message: 'Internal server error' });
+			res.status(500).json({ message: 'Internal server error' });
+			return;
 		}
 	} catch (error) {
-		return res.status(401).json({ message: 'Invalid token' })
+		res.status(401).json({ message: 'Invalid token' })
+		return;
 	}
 }
