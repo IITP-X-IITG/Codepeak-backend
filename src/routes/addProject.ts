@@ -64,4 +64,62 @@ router.post(
 	}
 )
 
+router.post(
+	'/update',
+	body('title').isString(),
+	body('description').isString(),
+	body('tags').isArray(),
+	body('languages').isArray(),
+	body('githubLink').isString(),
+	async (
+		req: {
+			body: {
+				title: string
+				description: string
+				tags: string[]
+				languages: string[]
+				githubLink: string
+			}
+		},
+		res: {
+			status: (arg0: number) => {
+				(): any
+				new (): any
+				json: { (arg0: { error?: any; message?: any }): void; new (): any }
+			}
+		}
+	) => {
+		const errors = validationResult(req)
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ error: errors.array() })
+		}
+		try {
+			// check if project exists
+			let project = await Project.findOne({ githubLink: req.body.githubLink })
+			if (!project) {
+				return res.status(404).json({ error: { msg: 'Project not found' } })
+			}
+
+			// Update the project
+			const updateResult = await Project.findOneAndUpdate(
+				{ githubLink: req.body.githubLink },
+				{
+					$set: {
+						title: req.body.title,
+						description: req.body.description,
+						tags: req.body.tags,
+						languages: req.body.languages,
+					}
+				},
+				{ new: true } // Return the updated document
+			)
+
+			res.status(200).json({ message: 'Project updated successfully', project: updateResult })
+		} catch (err: any) {
+			console.error(err.message)
+			res.status(500).json({ error: 'Server Error' })
+		}
+	}
+)
+
 module.exports = router
