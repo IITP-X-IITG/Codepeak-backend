@@ -66,7 +66,7 @@ router.post(
 )
 
 router.post(
-	'/update',authorization,mentorAuthorization
+	'/update',authorization,mentorAuthorization,
 	body('title').isString(),
 	body('description').isString(),
 	body('tags').isArray(),
