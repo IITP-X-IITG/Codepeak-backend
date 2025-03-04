@@ -1,10 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { addTransaction, updateTransaction } from '../service/transaction';
+import { authorization, mentorAuthorization } from '../service/auth';
 const Leaderboard = require('../../models/Leaderboard');
 const Transaction = require('../../models/Transactions');
 const router = Router();
 
-router.post('/add', async (req: Request, res: Response) => {
+router.post('/add', authorization, mentorAuthorization, async (req: Request, res: Response) => {
     try {
         const { student, mentor, project, points, type, open } = req.body;
         const result = await addTransaction(student, mentor, project, points, type, open);
@@ -26,7 +27,7 @@ router.post('/add', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/update', async (req: Request, res: Response) => {
+router.post('/update', authorization, mentorAuthorization, async (req: Request, res: Response) => {
     try {
         const { student, project, points, open } = req.body;
         const result = await updateTransaction(student, project, points, open);
