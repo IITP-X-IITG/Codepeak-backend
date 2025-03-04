@@ -4,6 +4,8 @@ import express, { Application, Request, Response } from 'express'
 import mongoose, { ConnectOptions } from 'mongoose'
 import cookieParser from 'cookie-parser'
 import { authorization } from './service/auth'
+const Student = require('../models/Student')
+const Mentor = require('../models/Mentor')
 
 dotenv.config()
 
@@ -35,9 +37,10 @@ if (dbURI) {
 			app.use('/api/register/', require('./routes/register'))
 			app.use('/api/add-project/', require('./routes/addProject'))
 			app.use('/api/login/', require('./routes/login'))
+			app.use('/api/logout/', require('./routes/logout'))
 			// Register new password API route
 			const passwordRoute = require('./routes/password');
-			app.use('/api/password', passwordRoute.default || passwordRoute);
+			app.use('/api/password', authorization, passwordRoute.default || passwordRoute);
 			// Register addTransaction middleware
 			app.use('/api/transactions', require('./routes/addTransaction').default);
 

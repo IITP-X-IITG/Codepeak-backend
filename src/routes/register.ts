@@ -86,7 +86,7 @@ router.post(
 				firstTime,
 			}
 			let user = new Student(student)
-			const token = generateToken({ email: email })
+			const token = generateToken({ email: email, isMentor: false })
 			console.log(token)
 			await user.save()
 

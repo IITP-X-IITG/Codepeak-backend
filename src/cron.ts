@@ -35,7 +35,7 @@ async function fetchIssuesAndPRs() {
     for (const issue of filteredIssues) {
       try {
         console.log(`Mentor: ${issue.repository_url.replace(issue.repository_url.split("/").slice(-1).join("/"),"").replace("https://api.github.com/repos/","https://github.com/")}`);
-        console.log(`Students: ${issue.user.html_url}`);
+        console.log(`Students: ${issue.user?.html_url}`);
         console.log(`Issue Title: ${issue.title}`);
         console.log(`Issue URL: ${issue.html_url}`);
         console.log(`type: ${issue.html_url.split("/")?.slice(-2,-1)?.[0]}`);
@@ -43,7 +43,7 @@ async function fetchIssuesAndPRs() {
         console.log("---------------------------");
         
         // Process transaction
-        await addTransaction(issue.user.html_url, 
+        await addTransaction(issue.user?.html_url, 
           issue.repository_url.replace(issue.repository_url.split("/").slice(-1).join("/"),"").replace("https://api.github.com/repos/","https://github.com/"),
           issue.html_url,
           0,
