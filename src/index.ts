@@ -19,7 +19,7 @@ app.get('/api/auth', authorization, (req, res) => {
 	res.status(200).json({ 
 		message: 'Authenticated',
 		github: req.githubUsername || "",
-		type: req.type || "",
+		type: req.isMentor? "mentor" : "student",
 		email: req.userEmail || ""
 	});
 })
