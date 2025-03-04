@@ -3,6 +3,7 @@ const express = require('express')
 const Project = require('../../models/Project')
 const router = express.Router()
 import { body, validationResult } from 'express-validator'
+import { authorization, mentorAuthorization } from '../service/auth'
 
 // @route   POST /api/add-project
 // @desc    Add project
@@ -65,7 +66,7 @@ router.post(
 )
 
 router.post(
-	'/update',
+	'/update',authorization,mentorAuthorization
 	body('title').isString(),
 	body('description').isString(),
 	body('tags').isArray(),
@@ -132,7 +133,7 @@ router.get('/get-all', async (req: any, res: any) => {
 	}
 })
 
-router.delete('/delete', async (req: any, res: any) => {
+router.delete('/delete',authorization,mentorAuthorization ,async (req: any, res: any) => {
     try {
         const { githubLink } = req.body;
         
