@@ -132,7 +132,7 @@ router.get('/get', async (req: any, res: any) => {
 		if (!githubLink) {
 			return res.status(400).json({ error: 'GitHub link is required' })
 		}
-		const project = await Project.findOne
+		const project = await Project.findOne({ githubLink })
 		if (!project) {
 			return res.status(404).json({ error: 'Project not found' })
 		}
