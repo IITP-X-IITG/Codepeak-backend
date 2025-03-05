@@ -25,8 +25,31 @@ export const addTransaction = async (
         // First establish connection
         await mongoose.connect(dbURI);
         
+        // Calculate deleteIndex with validation
+        let deleteIndex = project;
+        if (project && project.includes('/pull/')) {
+            deleteIndex = project.split('/pull/')[0];
+        } else if(project && project.includes('/issues/')){
+            deleteIndex = project.split('/issues/')[0];
+        }
+        else {
+            console.warn(`Project URL format unexpected: ${project}`);
+        }
+        console.log("Creating transaction with deleteIndex:", deleteIndex);
+        
         // Create transaction with timeout
-        const newTransaction = new Transaction({ student, mentor, project, points, type, open });
+        const newTransaction = new Transaction({ 
+            student, 
+            mentor, 
+            project, 
+            deleteIndex, 
+            points, 
+            type, 
+            open 
+        });
+        
+        console.log("Transaction object before save:", newTransaction);
+        
         await Promise.race([
             newTransaction.save(),
             new Promise((_, reject) =>

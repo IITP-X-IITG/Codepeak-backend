@@ -14,6 +14,10 @@ const transactionSchema = new Schema({
         required: true,
         unique: true
     },
+    deleteIndex : {
+        type: String,
+        required: true
+    },
     title :{
         type: String,
     },
@@ -30,4 +34,7 @@ const transactionSchema = new Schema({
         required: true
     },
 });
+
+transactionSchema.index({ project: 1 }, { unique: true });
+
 module.exports = model('transaction', transactionSchema)
