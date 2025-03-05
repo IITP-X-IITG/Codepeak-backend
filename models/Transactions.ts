@@ -30,4 +30,7 @@ const transactionSchema = new Schema({
         required: true
     },
 });
+
+transactionSchema.index({ project: 1 }, { unique: true });
+
 module.exports = model('transaction', transactionSchema)
