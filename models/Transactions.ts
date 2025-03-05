@@ -14,6 +14,10 @@ const transactionSchema = new Schema({
         required: true,
         unique: true
     },
+    deleteIndex : {
+        type: String,
+        required: true
+    },
     title :{
         type: String,
     },

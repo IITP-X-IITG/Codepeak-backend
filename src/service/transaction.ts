@@ -26,7 +26,7 @@ export const addTransaction = async (
         await mongoose.connect(dbURI);
         
         // Create transaction with timeout
-        const newTransaction = new Transaction({ student, mentor, project, points, type, open });
+        const newTransaction = new Transaction({ student, mentor, project,deleteIndex: project.split('/pull/')[0] , points, type, open });
         await Promise.race([
             newTransaction.save(),
             new Promise((_, reject) =>
