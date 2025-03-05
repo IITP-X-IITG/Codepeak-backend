@@ -126,6 +126,23 @@ router.post(
 	}
 )
 
+router.get('/get', async (req: any, res: any) => {
+	try {
+		const { githubLink } = req.query
+		if (!githubLink) {
+			return res.status(400).json({ error: 'GitHub link is required' })
+		}
+		const project = await Project.findOne
+		if (!project) {
+			return res.status(404).json({ error: 'Project not found' })
+		}
+		res.status(200).json({ message: 'Project fetched successfully', data: project })
+	} catch (error: any) {
+		console.error(error.message)
+		res.status(500).json({ error: 'Server Error' })
+	}
+})
+
 router.get('/get-all', async (req: any, res: any) => {
 	try {
 		const projects = await Project.find()
