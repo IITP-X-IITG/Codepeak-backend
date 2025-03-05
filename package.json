@@ -6,7 +6,7 @@
 		"build": "yarn rimraf dist && yarn tsc ; cp src/repo.txt dist/src/repo.txt",
 		"prestart": "yarn build",
 		"start": "concurrently \"node dist/src/index.js\" \"tsx src/cron\"",
-		"dev" : "yarn build; yarn start",
+		"dev": "yarn build; yarn start",
 		"serve": "tsc; nodemon dist/src/index.js",
 		"format": "prettier --write .",
 		"lint": "prettier --write . && eslint ."

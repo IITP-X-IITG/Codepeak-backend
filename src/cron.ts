@@ -19,7 +19,7 @@ repo.forEach((r) => {
 async function fetchIssuesAndPRs() {
   try {
     const response = await octokit.request("GET /search/issues", {
-      q: "label:\"codepeak 25\""
+      q: "label:\"codepeak25\""
     });
     
     const filteredIssues = response.data.items.filter((issue: any) => {
