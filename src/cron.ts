@@ -6,14 +6,14 @@ import { addTransaction } from "./service/transaction";
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const repoContent = readFileSync(resolve(__dirname, "repo.txt"), "utf-8");
 const repo = repoContent.split("\n");
-const repos:any[] =[];
+const repos: any[] = [];
 repo.forEach((r) => {
-    try {
-        r=r.split("/").splice(-2).join("/");
-        repos.push(r);
-    } catch (error) {
-        console.error("Error processing repo:", r, error);
-    }
+  try {
+    r = r.split("/").splice(-2).join("/");
+    repos.push(r);
+  } catch (error) {
+    console.error("Error processing repo:", r, error);
+  }
 });
 
 async function fetchIssuesAndPRs() {
@@ -21,35 +21,38 @@ async function fetchIssuesAndPRs() {
     const response = await octokit.request("GET /search/issues", {
       q: "label:\"codepeak 25\""
     });
-    
+
     const filteredIssues = response.data.items.filter((issue: any) => {
-        try {
-            return repos.some(repo => issue.repository_url.endsWith(repo));
-        } catch (error) {
-            console.error("Error filtering issues:", issue, error);
-            return false;
-        }
+      try {
+        return repos.some(repo => issue.repository_url.endsWith(repo));
+      } catch (error) {
+        console.error("Error filtering issues:", issue, error);
+        return false;
+      }
     });
-    
+
     // Process issues one by one using for...of loop instead of forEach
     for (const issue of filteredIssues) {
       try {
-        console.log(`Mentor: ${issue.repository_url.replace(issue.repository_url.split("/").slice(-1).join("/"),"").replace("https://api.github.com/repos/","https://github.com/")}`);
-        console.log(`Students: ${issue.user?.html_url}`);
+        const Mentor = issue.repository_url.replace(issue.repository_url.split("/").slice(-1).join("/"), "").replace("https://api.github.com/repos/", "https://github.com/");
+        const Students = issue.user?.html_url;
+        console.log(`Mentor: ${Mentor}`);
+        console.log(`Students: ${Students}`);
         console.log(`Issue Title: ${issue.title}`);
         console.log(`Issue URL: ${issue.html_url}`);
-        console.log(`type: ${issue.html_url.split("/")?.slice(-2,-1)?.[0]}`);
+        console.log(`type: ${issue.html_url.split("/")?.slice(-2, -1)?.[0]}`);
         console.log(`Issue State: ${issue.state}`);
         console.log("---------------------------");
-        
-        // Process transaction
-        await addTransaction(issue.user?.html_url, 
-          issue.repository_url.replace(issue.repository_url.split("/").slice(-1).join("/"),"").replace("https://api.github.com/repos/","https://github.com/"),
-          issue.html_url,
-          0,
-          issue.html_url.split("/")?.slice(-2,-1)?.[0],
-          issue.state === "open");
-          
+
+        if (Mentor !== Students && Mentor !== Students + "/") {
+          // Process transaction
+          await addTransaction(issue.user?.html_url,
+            Mentor,
+            issue.html_url,
+            0,
+            issue.html_url.split("/")?.slice(-2, -1)?.[0],
+            issue.state === "open");
+        }
       } catch (error) {
         // Log error but continue to next issue
         console.error("Error processing issue:", issue, error);
