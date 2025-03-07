@@ -34,7 +34,8 @@ async function fetchIssuesAndPRs() {
     // Process issues one by one using for...of loop instead of forEach
     for (const issue of filteredIssues) {
       try {
-        const Mentor = issue.repository_url.replace(issue.repository_url.split("/").slice(-1).join("/"), "").replace("https://api.github.com/repos/", "https://github.com/");
+        let Mentor = issue.repository_url.replace(issue.repository_url.split("/").slice(-1).join("/"), "").replace("https://api.github.com/repos/", "https://github.com/");
+        Mentor = Mentor.substring(0, Mentor.length - 1);
         const Students = issue.user?.html_url;
         console.log(`Mentor: ${Mentor}`);
         console.log(`Students: ${Students}`);
