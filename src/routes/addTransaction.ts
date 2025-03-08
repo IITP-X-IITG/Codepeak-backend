@@ -51,17 +51,17 @@ router.post('/update', authorization, mentorAuthorization, async (req: Request, 
     }
 });
 
-router.get('/mentor-project', async (req: Request, res: Response) => {
+router.get('/project', async (req: Request, res: Response) => {
     try {
-        const { mentor } = req.query;
+        const { project } = req.query;
         
-        if (!mentor) {
-            res.status(400).json({ message: 'Mentor parameters are required' });
+        if (!project) {
+            res.status(400).json({ message: 'project parameters are required' });
             return
         }
 
         const transactions = await Transaction.find({
-            mentor: mentor
+            deleteIndex: project
         });
 
         res.status(200).json({ 
