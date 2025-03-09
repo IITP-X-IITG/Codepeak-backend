@@ -143,6 +143,23 @@ router.get('/get', async (req: any, res: any) => {
 	}
 })
 
+router.get('/mentor', async (req: any, res: any) => {
+	try {
+		const { mentorGithub } = req.query
+		if (!mentorGithub) {
+			return res.status(400).json({ error: 'Mentor GitHub is required' })
+		}
+		const projects = await Project.find({ mentorGithub })
+		if (!projects) {
+			return res.status(404).json({ error: 'Projects not found' })
+		}
+		res.status(200).json({ message: 'Projects fetched successfully', data: projects })
+	} catch (error: any) {
+		console.error(error.message)
+		res.status(500).json({ error: 'Server Error' })
+	}
+})
+
 router.get('/get-all', async (req: any, res: any) => {
 	try {
 		const projects = await Project.find()
