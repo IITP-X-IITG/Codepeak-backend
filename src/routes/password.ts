@@ -21,17 +21,17 @@ router.post(
             return
         }
         try {
-            const { oldPassword, newPassword } = req.body;
-            const user = (req.type === undefined || req.userEmail === undefined)?null:await (
-                req.type?
-                Mentor.findOne({ email: req.userEmail }):
-                Student.findOne({ email: req.userEmail })
+            const { email, oldPassword, newPassword,type } = req.body;
+            const user = (type === undefined || email === undefined)?null:await (
+                (type==='mentor')? Mentor.findOne({ email: email }): Student.findOne({ email: email })
             );
-            if (!user || req.type === undefined) {
+            console.log(user);
+            console.log(type);
+            if (!user || type === undefined) {
                 res.status(404).json({ error: 'User not found' });
                 return
             }
-            const token = await updatePassword(user, req.type === 'mentor', oldPassword, newPassword);
+            const token = await updatePassword(user, type === 'mentor', oldPassword, newPassword);
             res.cookie('token', token);
             res.status(200).json({ message: 'Password updated successfully', token });
         } catch (err: any) {
